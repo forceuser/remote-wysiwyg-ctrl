@@ -2,7 +2,7 @@
 export default function open (url, data) {
 	return new Promise((resolve, reject) => {
 		const ident = btoa(Math.random()).replace(/\=/ig, "");
-		window.open(`?init=${ident}`, ident);
+		window.open(`${url}?init=${ident}`, ident);
 		window.addEventListener("message", event => {
 			if (event.data) {
 				const data = JSON.parse(event.data);

@@ -94,7 +94,7 @@ exports.default = open;
 function open(url, data) {
 	return new Promise(function (resolve, reject) {
 		var ident = btoa(Math.random()).replace(/\=/ig, "");
-		window.open("?init=" + ident, ident);
+		window.open(url + "?init=" + ident, ident);
 		window.addEventListener("message", function (event) {
 			if (event.data) {
 				var _data = JSON.parse(event.data);

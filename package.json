@@ -1,0 +1,38 @@
+{
+	"name": "remote-wysiwyg-ctrl",
+	"version": "1.0.0",
+	"description": "",
+	"main": "dist/wysiwyg.js",
+	"scripts": {
+		"build": "webpack --config ./webpack.config.js",
+		"fix": "eslint --fix .",
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/forceuser/remote-wysiwyg-ctrl.git"
+	},
+	"devDependencies": {
+		"babel-core": "^6.26.0",
+		"babel-eslint": "^8.2.2",
+		"babel-loader": "^7.1.2",
+		"babel-preset-env": "^1.6.1",
+		"babel-plugin-transform-async-to-generator": "^6.24.1",
+		"babel-plugin-transform-object-rest-spread": "^6.26.0",
+		"babel-plugin-transform-runtime": "^6.23.0",
+		"eslint": "^4.18.0",
+		"eslint-plugin-babel": "^4.1.2",
+		"eslint-plugin-import": "^2.8.0",
+		"exports-loader": "^0.7.0",
+		"http-server": "^0.11.1",
+		"imports-loader": "^0.7.1",
+		"regenerator-runtime": "^0.11.1",
+		"webpack": "^3.11.0"
+	},
+	"author": "",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/forceuser/remote-wysiwyg-ctrl/issues"
+	},
+	"homepage": "https://github.com/forceuser/remote-wysiwyg-ctrl#readme"
+}

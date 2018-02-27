@@ -1,4 +1,4 @@
-### Библиотека для работы с редактором https://github.com/forceuser/remote-wysiwyg
+### Модуль для работы с редактором [remote-wysiwyg](https://github.com/forceuser/remote-wysiwyg)
 
 
 установка

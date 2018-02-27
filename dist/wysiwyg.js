@@ -97,26 +97,25 @@ function open(url, data) {
 		window.open(url + "?init=" + ident, ident);
 		window.addEventListener("message", function (event) {
 			if (event.data) {
-				var _data = JSON.parse(event.data);
-				var type = _data.type,
-				    id = _data.id;
+				var evdata = JSON.parse(event.data);
+				var type = evdata.type,
+				    id = evdata.id;
 
 
 				if (id === ident) {
 					switch (type) {
 						case "init":
 							{
-
 								event.source.postMessage(JSON.stringify({
 									type: "init",
 									id: id,
-									data: Object.assign({}, _data, { callbackId: id })
+									data: Object.assign({}, data, { callbackId: id })
 								}), "*");
 								break;
 							}
 						case "save":
 							{
-								resolve(_data.content);
+								resolve(evdata.content);
 								event.source.close();
 								break;
 							}

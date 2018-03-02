@@ -53,7 +53,7 @@ export default function open (url, data, iframe) {
 						}
 						case "save":
 						{
-							ctrl.onSave && ctrl.onSave();
+							ctrl.onSave && ctrl.onSave(evdata.content);
 							if (evdata.close) {
 								event.source.close();
 							}

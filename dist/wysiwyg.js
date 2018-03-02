@@ -103,43 +103,7 @@ function open(url, data, iframe) {
 			wnd = window.open(href, ident);
 		}
 
-		window.addEventListener("message", function (event) {
-			if (event.data) {
-				var evdata = JSON.parse(event.data);
-				var type = evdata.type,
-				    id = evdata.id;
-
-
-				if (id === ident) {
-					switch (type) {
-						case "init":
-							{
-								event.source.postMessage(JSON.stringify({
-									type: "init",
-									id: id,
-									data: Object.assign({}, data, { callbackId: id })
-								}), "*");
-								break;
-							}
-						case "save":
-							{
-								resolve(evdata.content);
-								if (evdata.close) {
-									event.source.close();
-								}
-								break;
-							}
-						case "cancel":
-							{
-								reject("cancel");
-								break;
-							}
-					}
-				}
-			}
-		});
-
-		return {
+		var ctrl = {
 			save: function save() {
 				wnd.postMessage(JSON.stringify({
 					type: "save",
@@ -160,6 +124,43 @@ function open(url, data, iframe) {
 				}), "*");
 			}
 		};
+
+		window.addEventListener("message", function (event) {
+			if (event.data) {
+				var evdata = JSON.parse(event.data);
+				var type = evdata.type,
+				    id = evdata.id;
+
+
+				if (id === ident) {
+					switch (type) {
+						case "init":
+							{
+								event.source.postMessage(JSON.stringify({
+									type: "init",
+									id: id,
+									data: Object.assign({}, data, { callbackId: id })
+								}), "*");
+								resolve(ctrl);
+								break;
+							}
+						case "save":
+							{
+								ctrl.onSave && ctrl.onSave();
+								if (evdata.close) {
+									event.source.close();
+								}
+								break;
+							}
+						case "cancel":
+							{
+								ctrl.onCancel && ctrl.onCancel();
+								break;
+							}
+					}
+				}
+			}
+		});
 	});
 }
 

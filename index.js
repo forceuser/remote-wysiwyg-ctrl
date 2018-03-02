@@ -12,41 +12,7 @@ export default function open (url, data, iframe) {
 			wnd = window.open(href, ident);
 		}
 
-		window.addEventListener("message", event => {
-			if (event.data) {
-				const evdata = JSON.parse(event.data);
-				const {type, id} = evdata;
-
-				if (id === ident) {
-					switch (type) {
-						case "init":
-						{
-							event.source.postMessage(JSON.stringify({
-								type: "init",
-								id,
-								data: Object.assign({}, data, {callbackId: id}),
-							}), "*");
-							break;
-						}
-						case "save":
-						{
-							resolve(evdata.content);
-							if (evdata.close) {
-								event.source.close();
-							}
-							break;
-						}
-						case "cancel":
-						{
-							reject("cancel");
-							break;
-						}
-					}
-				}
-			}
-		});
-
-		return {
+		const ctrl = {
 			save () {
 				wnd.postMessage(JSON.stringify({
 					type: "save",
@@ -67,5 +33,40 @@ export default function open (url, data, iframe) {
 				}), "*");
 			},
 		};
+
+		window.addEventListener("message", event => {
+			if (event.data) {
+				const evdata = JSON.parse(event.data);
+				const {type, id} = evdata;
+
+				if (id === ident) {
+					switch (type) {
+						case "init":
+						{
+							event.source.postMessage(JSON.stringify({
+								type: "init",
+								id,
+								data: Object.assign({}, data, {callbackId: id}),
+							}), "*");
+							resolve(ctrl);
+							break;
+						}
+						case "save":
+						{
+							ctrl.onSave && ctrl.onSave();
+							if (evdata.close) {
+								event.source.close();
+							}
+							break;
+						}
+						case "cancel":
+						{
+							ctrl.onCancel && ctrl.onCancel();
+							break;
+						}
+					}
+				}
+			}
+		});
 	});
 }

@@ -91,10 +91,18 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 exports.default = open;
-function open(url, data) {
+function open(url, data, iframe) {
 	return new Promise(function (resolve, reject) {
 		var ident = btoa(Math.random()).replace(/\=/ig, "");
-		window.open(url + "?init=" + ident, ident);
+		var href = url + "?init=" + ident;
+		var wnd = void 0;
+		if (iframe) {
+			iframe.src = href;
+			wnd = iframe.contentWindow;
+		} else {
+			wnd = window.open(href, ident);
+		}
+
 		window.addEventListener("message", function (event) {
 			if (event.data) {
 				var evdata = JSON.parse(event.data);
@@ -116,7 +124,9 @@ function open(url, data) {
 						case "save":
 							{
 								resolve(evdata.content);
-								event.source.close();
+								if (evdata.close) {
+									event.source.close();
+								}
 								break;
 							}
 						case "cancel":
@@ -128,6 +138,28 @@ function open(url, data) {
 				}
 			}
 		});
+
+		return {
+			save: function save() {
+				wnd.postMessage(JSON.stringify({
+					type: "save",
+					id: ident
+				}), "*");
+			},
+			cancel: function cancel() {
+				wnd.postMessage(JSON.stringify({
+					type: "cancel",
+					id: ident
+				}), "*");
+			},
+			changemode: function changemode(mode) {
+				wnd.postMessage(JSON.stringify({
+					type: "changemode",
+					id: ident,
+					mode: mode
+				}), "*");
+			}
+		};
 	});
 }
 

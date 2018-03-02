@@ -1,8 +1,17 @@
 
-export default function open (url, data) {
+export default function open (url, data, iframe) {
 	return new Promise((resolve, reject) => {
 		const ident = btoa(Math.random()).replace(/\=/ig, "");
-		window.open(`${url}?init=${ident}`, ident);
+		const href = `${url}?init=${ident}`;
+		let wnd;
+		if (iframe) {
+			iframe.src = href;
+			wnd = iframe.contentWindow;
+		}
+		else {
+			wnd = window.open(href, ident);
+		}
+
 		window.addEventListener("message", event => {
 			if (event.data) {
 				const evdata = JSON.parse(event.data);
@@ -22,7 +31,9 @@ export default function open (url, data) {
 						case "save":
 						{
 							resolve(evdata.content);
-							event.source.close();
+							if (evdata.close) {
+								event.source.close();
+							}
 							break;
 						}
 						case "cancel":
@@ -34,5 +45,27 @@ export default function open (url, data) {
 				}
 			}
 		});
+
+		return {
+			save () {
+				wnd.postMessage(JSON.stringify({
+					type: "save",
+					id: ident,
+				}), "*");
+			},
+			cancel () {
+				wnd.postMessage(JSON.stringify({
+					type: "cancel",
+					id: ident,
+				}), "*");
+			},
+			changemode (mode) {
+				wnd.postMessage(JSON.stringify({
+					type: "changemode",
+					id: ident,
+					mode,
+				}), "*");
+			},
+		};
 	});
 }

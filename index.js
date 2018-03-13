@@ -48,13 +48,17 @@ export default function open (url, data, iframe) {
 
 				if (id === ident) {
 					switch (type) {
-						case "init":
+						case "preinit":
 						{
 							event.source.postMessage(JSON.stringify({
 								type: "init",
 								id,
 								data: Object.assign({}, data, {callbackId: id}),
 							}), "*");
+							break;
+						}
+						case "initialized":
+						{
 							resolve(ctrl);
 							break;
 						}

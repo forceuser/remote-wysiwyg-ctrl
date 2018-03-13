@@ -32,6 +32,13 @@ export default function open (url, data, iframe) {
 					mode,
 				}), "*");
 			},
+			settings (data) {
+				wnd.postMessage(JSON.stringify({
+					type: "settings",
+					id: ident,
+					data,
+				}), "*");
+			},
 		};
 
 		window.addEventListener("message", event => {

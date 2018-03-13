@@ -122,6 +122,13 @@ function open(url, data, iframe) {
 					id: ident,
 					mode: mode
 				}), "*");
+			},
+			settings: function settings(data) {
+				wnd.postMessage(JSON.stringify({
+					type: "settings",
+					id: ident,
+					data: data
+				}), "*");
 			}
 		};
 

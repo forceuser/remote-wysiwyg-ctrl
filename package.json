@@ -1,6 +1,6 @@
 {
 	"name": "remote-wysiwyg-ctrl",
-	"version": "1.0.10",
+	"version": "1.0.11",
 	"description": "",
 	"main": "dist/wysiwyg.js",
 	"scripts": {

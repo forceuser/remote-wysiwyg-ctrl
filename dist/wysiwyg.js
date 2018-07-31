@@ -87,6 +87,15 @@ module.exports = __webpack_require__(1);
 "use strict";
 
 
+module.exports = __webpack_require__(2).default;
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });

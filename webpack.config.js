@@ -3,7 +3,7 @@ const path = require("path");
 
 module.exports = {
 	entry: {
-		"wysiwyg": [path.resolve(__dirname, "./index.js")],
+		"wysiwyg": [path.resolve(__dirname, "./cjs-entry.js")],
 	},
 	output: {
 		path: path.resolve(__dirname, "./dist"),

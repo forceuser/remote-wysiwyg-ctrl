@@ -96,9 +96,16 @@ function open(url, data, iframe) {
 		var ident = btoa(Math.random()).replace(/\=/ig, "");
 		var href = url + "?init=" + ident;
 		var wnd = void 0;
+		var timetoinit = void 0;
 		if (iframe) {
 			iframe.src = href;
 			wnd = iframe.contentWindow;
+			timetoinit = setInterval(function () {
+				if (!iframe.parentNode) {
+					reject();
+					clearInterval(timetoinit);
+				}
+			}, 500);
 		} else {
 			wnd = window.open(href, ident);
 		}
@@ -152,6 +159,7 @@ function open(url, data, iframe) {
 							}
 						case "initialized":
 							{
+								clearInterval(timetoinit);
 								resolve(ctrl);
 								break;
 							}

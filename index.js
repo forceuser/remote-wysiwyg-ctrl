@@ -4,9 +4,16 @@ export default function open (url, data, iframe) {
 		const ident = btoa(Math.random()).replace(/\=/ig, "");
 		const href = `${url}?init=${ident}`;
 		let wnd;
+		let timetoinit;
 		if (iframe) {
 			iframe.src = href;
 			wnd = iframe.contentWindow;
+			timetoinit = setInterval(() => {
+				if (!iframe.parentNode) {
+					reject();
+					clearInterval(timetoinit);
+				}
+			}, 500);
 		}
 		else {
 			wnd = window.open(href, ident);
@@ -59,6 +66,7 @@ export default function open (url, data, iframe) {
 						}
 						case "initialized":
 						{
+							clearInterval(timetoinit);
 							resolve(ctrl);
 							break;
 						}

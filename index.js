@@ -39,6 +39,13 @@ export default function open (url, data, iframe) {
 					mode,
 				}), "*");
 			},
+			setColorScheme (colorScheme) {
+				wnd.postMessage(JSON.stringify({
+					type: "setColorScheme",
+					id: ident,
+					colorScheme,
+				}), "*");
+			},
 			settings (data) {
 				wnd.postMessage(JSON.stringify({
 					type: "settings",

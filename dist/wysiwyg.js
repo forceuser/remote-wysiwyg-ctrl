@@ -139,6 +139,13 @@ function open(url, data, iframe) {
 					mode: mode
 				}), "*");
 			},
+			setColorScheme: function setColorScheme(colorScheme) {
+				wnd.postMessage(JSON.stringify({
+					type: "setColorScheme",
+					id: ident,
+					colorScheme: colorScheme
+				}), "*");
+			},
 			settings: function settings(data) {
 				wnd.postMessage(JSON.stringify({
 					type: "settings",
